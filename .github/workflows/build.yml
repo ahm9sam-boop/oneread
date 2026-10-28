@@ -31,6 +31,9 @@ jobs:
       - run: npx cap add android
       - name: Camera permission
         run: sed -i 's#<application#<uses-permission android:name="android.permission.CAMERA" />\n    <application#' android/app/src/main/AndroidManifest.xml
+      - name: Fix Min SDK for compatibility
+        run: |
+          sed -i 's/minSdkVersion [0-9]*/minSdkVersion 21/g' android/variables.gradle || sed -i 's/minSdk = [0-9]*/minSdk = 21/g' android/variables.gradle
       - run: npx cap sync android
       - name: Build
         run: cd android && chmod +x gradlew && ./gradlew assembleDebug
